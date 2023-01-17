@@ -17,7 +17,7 @@ pipeline {
                 script {
                     if(env.CHANGE_ID != null && env.BRANCH_NAME != 'main') {
                         sh "echo $env.BRANCH_NAME"
-                        sh "echo 'pull request jk'"
+                        sh "echo $env.CHANGE_ID"
                     } else if (env.BRANCH_NAME == 'main') {
                         sh "echo 'main branch'"
                     }
