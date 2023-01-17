@@ -21,7 +21,7 @@ pipeline {
                     } else if (env.BRANCH_NAME == 'main') {
                         sh "echo 'main branch'"
                     } else {
-                        sh "echo 'build is nor valid'"
+                        sh "echo 'build is notgfd valid'"
                     }
                 }
             }
