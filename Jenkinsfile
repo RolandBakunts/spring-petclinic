@@ -8,17 +8,15 @@ pipeline {
 
     agent {
         // If you want to add agents below, change this to "none".
-        node {
-            label 'ubuntu-agent'
-        }
+        none
     }
     stages {
         stage('Pipeline for main branch') {
             // You can add your own remote agent server.
 
-            // agent {
-            //     label "linux"
-            // }
+            agent {
+                label 'ubuntu-agent'
+            }
             when {
                 branch 'main'
             }
