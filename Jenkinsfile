@@ -8,37 +8,47 @@ pipeline {
 
     agent {
         // If you want to add agents below, change this to "none".
-        none
+        node {
+            label 'ubuntu-agent'
+        }
     }
     stages {
-        stage('Pipeline for main branch') {
-            // You can add your own remote agent server.
-
-            agent {
-                label 'ubuntu-agent'
-            }
-            when {
-                branch 'main'
-            }
-            stages {
-                stage('Build Docker Image') {
-                    steps {
-                        sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER .'
+            stage('Build Docker Image') {
+                when {
+                    branch 'main'
                     }
-                }
-
-                // stage('Login DockerHub') {
-                //     steps {
-                //         sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
-                //     }
-                // }
-
-                // stage('Deloy Docker Image to DockerHub') {
-                //     steps {
-                //         sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
-                //     }
-                // }
+                steps {
+                    echo 'dasnokdnasdnaskondaskmdoand'
             }
+        
+        // stage('Pipeline for main branch') {
+        //     // You can add your own remote agent server.
+
+        //     // agent {
+        //     //     label "linux"
+        //     // }
+        //     when {
+        //         branch 'main'
+        //     }
+        //     stages {
+        //         stage('Build Docker Image') {
+        //             steps {
+        //                 sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER .'
+        //             }
+        //         }
+
+        //         stage('Login DockerHub') {
+        //             steps {
+        //                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+        //             }
+        //         }
+
+        //         stage('Deloy Docker Image to DockerHub') {
+        //             steps {
+        //                 sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
+        //             }
+        //         }
+        //     }
         }
 
         // stage('Pipeline for Merge Request') {
