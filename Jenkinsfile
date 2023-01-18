@@ -12,19 +12,23 @@ pipeline {
         }
     }
     stages {
-        stage('pull request') {
-            steps {
-                script {
-                    if(env.CHANGE_ID != null && env.BRANCH_NAME != 'main') {
-                        sh "echo $env.BRANCH_NAME"
-                        sh "echo $env.CHANGE_ID"
-                    } else if (env.BRANCH_NAME == 'main') {
-                        sh "echo 'main branch'"
-                    } else {
-                        sh "echo 'build not valid'"
-                    }
-                }
+        stage('master branch') {
+            when {
+                branch 'main'
             }
+            steps {
+               echo 'this only runs for master branch!!!!999999'
+            }
+        }
+
+        stage('pull request') {
+            when {
+                branch 'PR-*'
+            }
+            steps {
+               echo 'this only runs for pull request!8888'
+            }
+        }
             // steps {
             //     script {
             //         if (BRANCH_NAME != 'main' && env.CHANGE_ID){
@@ -38,7 +42,6 @@ pipeline {
             //         }
             //     }
             // }       
-        }
     }
             // stage('checkstyle') {
             //     steps {
