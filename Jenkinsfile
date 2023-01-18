@@ -1,7 +1,7 @@
 pipeline {
 
     environment { 
-        DOCKERHUB_CREDENTIALS=credentials('rolandgryddynamics-dockerhub')
+        DOCKERHUB_CREDENTIALS=credentials('dockerhub-credentials')
         MERGE_REPOSITORY='mr'
         MAIN_REPOSITORY='main'
     }
