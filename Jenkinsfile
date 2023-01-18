@@ -12,85 +12,107 @@ pipeline {
         }
     }
     stages {
-        stage('master branch') {
+        stage('nested jenkinsfile for main') {
             when {
                 branch 'main'
             }
-            steps {
-               echo 'this only runs for master branch!!!!999999'
+            stages {
+                stage('Building Distributable Package') {
+                    steps {
+                        echo 'Building'
+                    }
+                }
+                stage('Archiving Package') {
+                    steps {
+                        echo 'Archiving Aritfacts'
+                    }
+                }
             }
         }
-        stage('pull request') {
-            when {
-                branch 'PR-*'
-            }
-            steps {
-               echo 'this only runs for pull request!'
-            }
-        }
-
-            // steps {
-            //     script {
-            //         if (BRANCH_NAME != 'main' && env.CHANGE_ID){
-            //             sh "echo 'ndsakmmkdsa'"
-            //             sh "echo 'hfiejrfrei'"
-            //         } else if (BRANCH_NAME == 'main') {
-            //             sh "echo main"
-            //         } else {
-            //             sh "echo $BRANCH_NAME"
-            //             sh "echo $env.BRANCH_NAME"
-            //         }
-            //     }
-            // }       
-    }
-            // stage('checkstyle') {
-            //     steps {
-            //         sh './gradlew checkstyleMain'
-            //         archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
-            //     }
-            // }
-            // stage('test') {
-            //     steps {
-            //         sh './gradlew compileJava'
-            //     }
-            // }
-            // stage('build') {
-            //     steps {
-            //         sh './gradlew build -x test'
-            //     }
-            // }
-    
-        //     stage('Build Docker image') {
-        //         steps {
-        //             script{
-        //                 if (env.BRANCH_NAME == 'main') {
-        //                    sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER .'
-        //                 } else {
-        //                     sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER .'
-        //                 }
-        //             }
-        //         }
+        // stage('checkstyle') {
+        //     when {
+        //         branch 'PR-*'
         //     }
-        //     stage('Login DockerHub') {
-        //         steps {
-        //             sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
-        //         }
-        //     }
-        //     stage('Deploy Docker image to DockerHub') {
-        //         steps {
-        //             script{
-        //                 if (env.BRANCH_NAME == 'main') {
-        //                     sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
-        //                 } else {
-        //                     sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER'
-        //                 }
-        //             }
-        //         }
+        //     steps {
+        //         sh './gradlew checkstyleMain'
+        //         archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
         //     }
         // }
+                
+        // stage('test') {
+        //     when {
+        //         branch 'PR-*'
+        //     }
+        //     steps {
+        //         sh './gradlew compileJava'
+        //     }
+        // }
+
+        // stage('build') {
+        //     when {
+        //         branch 'PR-*'
+        //     }
+        //     steps {
+        //         sh './gradlew build -x test'
+        //     }
+        // }
+    
+        // stage('Build Docker image') {
+        //     when {
+        //         branch 'PR-*'
+        //     }
+        //     steps {
+        //         echo 'Login to DockerHub'
+        //         sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+
+        //         sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER .'
+        //     }
+        // }
+
+        // stage('Login DockerHub') {
+        //         steps {
+        //     }
+        // }
+
+        // stage('deploy Docker image PR') {
+        //     when {
+        //         branch 'PR-*'
+        //     }
+        //     steps {
+        //        sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER'
+        //     }
+        // }
+
+        // stage('Build Docker image Master branch') {
+        //     when {
+        //         branch 'main'
+        //     }
+        //     steps {
+        //         echo 'Login to DockerHub'
+        //         sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+
+        //         sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER .'
+        //     }
+        // }
+
+        // stage('deploy Docker image master branch') {
+        //     // You can add your own remote agent server
+            
+        //     // agent {
+        //     //   label "linux"
+        //     // }
+        //     when {
+        //         branch 'main'
+        //     }
+        //     steps {
+        //         sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
+        //     }
+        // }
+
         // post {
         //     always {
         //         sh 'docker logout'
         //     }
         // }
+    }
 }
