@@ -12,107 +12,92 @@ pipeline {
         }
     }
     stages {
-        stage('nested jenkinsfile for main') {
+        stage('Pipeline for main branch') {
+            // You can add your own remote agent server.
+
+            // agent {
+            //     label "linux"
+            // }
+
             when {
                 branch 'main'
             }
             stages {
-                stage('Building Distributable Package') {
+                stage('Build Docker Image') {
                     steps {
-                        echo 'Building'
+                        sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER .'
                     }
                 }
-                stage('Archiving Package') {
+
+                stage('Login DockerHub') {
                     steps {
-                        echo 'Archiving Aritfacts!'
+                        sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+                    }
+                }
+
+                stage('Deloy Docker Image to DockerHub') {
+                    steps {
+                        sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
                     }
                 }
             }
         }
-        // stage('checkstyle') {
-        //     when {
-        //         branch 'PR-*'
-        //     }
-        //     steps {
-        //         sh './gradlew checkstyleMain'
-        //         archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
-        //     }
-        // }
-                
-        // stage('test') {
-        //     when {
-        //         branch 'PR-*'
-        //     }
-        //     steps {
-        //         sh './gradlew compileJava'
-        //     }
-        // }
 
-        // stage('build') {
-        //     when {
-        //         branch 'PR-*'
-        //     }
-        //     steps {
-        //         sh './gradlew build -x test'
-        //     }
-        // }
-    
-        // stage('Build Docker image') {
-        //     when {
-        //         branch 'PR-*'
-        //     }
-        //     steps {
-        //         echo 'Login to DockerHub'
-        //         sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+        stage('Pipeline for Merge Request') {
+            // You can add your own remote agent server.
 
-        //         sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER .'
-        //     }
-        // }
+            // agent {
+            //     label "linux"
+            // }
 
-        // stage('Login DockerHub') {
-        //         steps {
-        //     }
-        // }
+            when {
+                branch 'PR-*'
+            }
 
-        // stage('deploy Docker image PR') {
-        //     when {
-        //         branch 'PR-*'
-        //     }
-        //     steps {
-        //        sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER'
-        //     }
-        // }
+            stages {
+                stage('Generate code style report and save it as artifact') {
+                    steps {
+                        sh './gradlew checkstyleMain'
+                        archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
+                    }
+                }
 
-        // stage('Build Docker image Master branch') {
-        //     when {
-        //         branch 'main'
-        //     }
-        //     steps {
-        //         echo 'Login to DockerHub'
-        //         sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+                stage('Test') {
+                    steps {
+                        sh './gradlew compileJava'
+                    }
+                }
 
-        //         sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER .'
-        //     }
-        // }
+                stage('Build without test') {
+                    steps {
+                        sh './gradlew build -x test'
+                    }
+                }
 
-        // stage('deploy Docker image master branch') {
-        //     // You can add your own remote agent server
-            
-        //     // agent {
-        //     //   label "linux"
-        //     // }
-        //     when {
-        //         branch 'main'
-        //     }
-        //     steps {
-        //         sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
-        //     }
-        // }
+                stage('Build Docker Image') {
+                    steps {
+                        sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER .'
+                    }
+                }
 
-        // post {
-        //     always {
-        //         sh 'docker logout'
-        //     }
-        // }
+                stage('Login DockerHub') {
+                    steps {
+                        sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+                    }
+                }
+
+                stage('Deloy Docker Image to DockerHub') {
+                    steps {
+                        sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER'
+                    }
+                }
+            }
+        }
+
+        post {
+            always {
+                sh 'docker logout'
+            }
+        }
     }
 }
