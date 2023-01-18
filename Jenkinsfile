@@ -24,7 +24,7 @@ pipeline {
                 }
                 stage('Archiving Package') {
                     steps {
-                        echo 'Archiving Aritfacts'
+                        echo 'Archiving Aritfacts!'
                     }
                 }
             }
