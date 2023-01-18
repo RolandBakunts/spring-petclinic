@@ -20,7 +20,6 @@ pipeline {
                echo 'this only runs for master branch!!!!999999'
             }
         }
-
         stage('pull request') {
             when {
                 branch 'PR-*'
