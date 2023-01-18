@@ -29,17 +29,17 @@ pipeline {
                     }
                 }
 
-                stage('Login DockerHub') {
-                    steps {
-                        sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
-                    }
-                }
+                // stage('Login DockerHub') {
+                //     steps {
+                //         sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+                //     }
+                // }
 
-                stage('Deloy Docker Image to DockerHub') {
-                    steps {
-                        sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
-                    }
-                }
+                // stage('Deloy Docker Image to DockerHub') {
+                //     steps {
+                //         sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
+                //     }
+                // }
             }
         }
 
