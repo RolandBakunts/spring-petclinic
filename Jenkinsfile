@@ -26,7 +26,7 @@ pipeline {
                 branch 'PR-*'
             }
             steps {
-               echo 'this only runs for pull request!8888'
+               echo 'this only runs for pull request!'
             }
         }
             // steps {
