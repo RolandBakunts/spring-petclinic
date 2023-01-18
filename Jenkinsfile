@@ -8,7 +8,7 @@ pipeline {
 
     agent {
         node {
-            label 'ubuntu-master'
+            label 'ubuntu-agent'
         }
     }
     stages {
@@ -18,7 +18,6 @@ pipeline {
             // agent {
             //     label "linux"
             // }
-
             when {
                 branch 'main'
             }
