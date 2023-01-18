@@ -7,6 +7,7 @@ pipeline {
     }
 
     agent {
+        // If you want to add agents below, change this to "none".
         node {
             label 'ubuntu-agent'
         }
