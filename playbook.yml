@@ -1,0 +1,25 @@
+---
+- name: launch application on remote server
+  hosts: prod
+  become: true
+
+  vars:
+    source_file: ./target/spring-petclinic-4.2.10-SNAPSHOT.jar
+    destin_file: "/home/ubuntu/"
+    java_package: openjdk-17-jdk
+
+  tasks:
+      - name: Task-1 Update APT package manager repositories cache
+        apt:
+          update_cache: yes
+
+      - name: Task-2 Install Java using Ansible
+        apt:
+          name: "{{ java_package }}"
+          state: present
+
+      - name: Task-3 Copy JAR File
+        copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+
+      - name: Task-4 Run App
+        shell: java -jar *.jar
