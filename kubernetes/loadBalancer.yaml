@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+ name: yvn-spring-pod
+spec:
+ type: LoadBalancer
+ selector:
+   app: yvn-spring
+   env: prod
+ ports:
+ - name: app-balancer
+   protocol: TCP
+   port: 80
+   targetPort: 80

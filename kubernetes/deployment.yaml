@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-first-deployment-yvn
+  labels:
+    app: my-first-deployment
+spec:
+  selector:
+    matchLabels:
+      app: my-first-deployment
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: my-first-deployment
+    spec:
+      containers:
+      - name: yvn-spring-app
+        image: rolandgryddynamics/myapp:latest
+        ports:
+        - containerPort: 80

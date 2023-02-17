@@ -1,0 +1,6 @@
+containers:
+  image: Your_Image_Name
+replicas: 2
+name: my-first-deployment
+ports:
+  service: 8080
