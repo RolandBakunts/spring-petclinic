@@ -1,0 +1,11 @@
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Import Grafana dashboard JMX
+      grafana_dashboard:
+        grafana_url: http://localhost:3000
+        grafana_user: "admin"
+        grafana_password: admin
+        folder: General
+        uid: "000000653"
+        path: "./JMX.json"

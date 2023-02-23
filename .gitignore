@@ -17,3 +17,6 @@ _site/
 !petclinic.css
 ansible.pem
 hosts
+kubernetes/aks/.terraform*
+kubernetes/aks/terraform.tfstate*
+kubernetes/aks/kubeconfig
